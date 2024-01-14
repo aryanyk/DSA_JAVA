@@ -149,6 +149,8 @@ private static Node insertk(Node head,int val, int pos){
 }
 
 private static Node swap(Node head){
+
+
     Node temp=null;
     Node current=head;
     while (current!=null) {
@@ -164,8 +166,70 @@ private static Node swap(Node head){
     return head;
 }
 
-    public static void main(String[] args) {
-        int[] ar = {12, 3, 4, 5};
+// code is for grouping of even postion node and odd position node
+private static Node evenlinkedNode(Node head){
+    Node odd=head;
+    Node even=head.next;
+    Node evenHead=even; // Remeber even always be ahead of odd so conditions only for even
+    while(even!=null && even.next!=null){
+        odd.next=odd.next.next;
+        even.next=even.next.next;
+
+        odd=odd.next;
+        even=even.next.next;
+    }
+    odd.next=evenHead; // Connecting odd last node to evenhead 
+    return head;
+     
+
+}
+
+private static Node groupsimilarNode(Node head){
+     
+    if(head==null||head.next==null) return head;
+
+    // Dummy Nodes to connect similar nodes
+    Node zerohead=new Node(-1);
+    Node onehead=new Node(-1);
+    Node twohead=new Node(-1);
+
+    Node zero=zerohead;
+    Node one=onehead;
+    Node two=twohead;
+    Node temp=head;
+
+    while(temp!=null){
+        if(temp.data==0){
+            zero.next=temp;
+            zero=zero.next;
+
+        }
+        else if(temp.data==1){
+            one.next=temp;
+            one=one.next;
+
+        }
+        else{
+            two.next=temp;
+            two=two.next;
+        }
+        temp=temp.next;
+    }
+
+    zero.next=(onehead.next != null)? (onehead.next) :(twohead.next);
+    one.next=twohead.next;
+    twohead.next=null;
+    Node newhead= zerohead.next;
+    return newhead;
+
+    
+     
+
+}
+
+public static void main(String[] args) {
+        // int[] ar = {12, 3, 6, 5};
+        int[] ar = {1,1,0,2,0,1,2};
          Node head = Convertarr2dll(ar);
         // printLinkedList(head);
         // Node dNode = delhead(head);
@@ -174,8 +238,10 @@ private static Node swap(Node head){
         // Node headins = inserthead(head,6);
         // Node tailins = inserttail(head,9);
         // Node ink = insertk(head,16,3);
-        Node rev = swap(head);
-        printLinkedList(rev);
+        // Node rev = swap(head);
+        //  Node grp=evenlinkedNode(head);
+        Node grp=groupsimilarNode(head);
+         printLinkedList(grp);
     }
 
     
